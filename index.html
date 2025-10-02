@@ -266,9 +266,7 @@
     function clearCompleted(){ if(!confirm('Supprimer définitivement les devoirs archivés ?')) return; state.archive = []; save(state); render(); }
 
     async function requestNotifications(){
-      if(!('Notification'
-
-Notification' in window)) return alert('Notifications non supportées par ton navigateur.');
+      if(!('Notification' in window)) return alert('Notifications non supportées par ton navigateur.');
       const perm = await Notification.requestPermission();
       if(perm==='granted') alert('Notifications autorisées');
       else alert('Permission refusée.');
