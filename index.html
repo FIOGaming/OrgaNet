@@ -6,28 +6,34 @@
   <title>OrgaNet — Mon organiseur</title>
   <style>
     :root{
-      --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#7c5cff; --success:#34d399;
+      --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#7c5cff; --accent2:#4a9dff; --success:#34d399;
       --glass: rgba(255,255,255,0.03);
+      --important: rgba(255,193,7,0.12);
     }
+    /* Light theme variables */
+    body.light{ --bg:#f6f7fb; --card:#ffffff; --muted:#5b6770; --glass: rgba(2,6,23,0.03); color:#071322 }
+
     *{box-sizing:border-box}
-    body{font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:linear-gradient(180deg,#071021 0%, #071322 60%); color:#e6eef6; min-height:100vh; padding:28px}
+    body{font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:linear-gradient(180deg,var(--bg) 0%, #071322 60%); color:var(--e6, #e6eef6); min-height:100vh; padding:28px}
     .wrap{max-width:980px;margin:0 auto}
     header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
-    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#4a9dff);display:flex;align-items:center;justify-content:center;font-weight:700;color:#071322;font-size:20px;box-shadow:0 6px 20px rgba(124,92,255,0.18)}
+    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#071322;font-size:20px;box-shadow:0 6px 20px rgba(124,92,255,0.18)}
     h1{margin:0;font-size:20px}
     p.lead{margin:0;color:var(--muted);font-size:13px}
 
     .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
-    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 30px rgba(2,6,23,0.6);}
+    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 30px rgba(2,6,23,0.06);}
 
-    input[type=text], input[type=date], input[type=time], textarea, select{background:var(--glass);border:1px solid rgba(255,255,255,0.03);padding:10px;border-radius:8px;color:inherit;width:100%;}
-    button.btn{background:linear-gradient(90deg,var(--accent),#4a9dff);border:none;padding:10px 12px;border-radius:10px;color:#071322;cursor:pointer;font-weight:600}
-    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.05);color:var(--muted)}
+    input[type=text], input[type=date], input[type=time], textarea, select{background:var(--glass);border:1px solid rgba(0,0,0,0.04);padding:10px;border-radius:8px;color:inherit;width:100%;}
+    button.btn{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;padding:10px 12px;border-radius:10px;color:#071322;cursor:pointer;font-weight:600}
+    .btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--muted)}
+    .btn.danger{background:linear-gradient(90deg,#ff5c5c,#ff0000);color:#fff}
 
     select { color:#000; background:#fff; }
 
     ul.devoirs{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
-    li.devoir{display:flex;align-items:flex-start;gap:12px;padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02)}
+    li.devoir{display:flex;align-items:flex-start;gap:12px;padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(0,0,0,0.06)}
+    li.devoir.important{background:var(--important);box-shadow:0 6px 16px rgba(255,193,7,0.08);border-left:4px solid #FFC107}
     .devoir .meta{font-size:12px;color:var(--muted)}
     .devoir .title{font-weight:600}
     .small{font-size:12px;color:var(--muted)}
@@ -35,8 +41,11 @@
     .controls{display:flex;gap:8px;align-items:center}
     .settings-row{display:flex;gap:8px;align-items:center;margin-top:10px}
 
-    .progress{height:10px;background:rgba(255,255,255,0.04);border-radius:12px;overflow:hidden}
-    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#4a9dff);width:0%}
+    .progress{height:14px;background:rgba(0,0,0,0.06);border-radius:12px;overflow:hidden;display:flex;align-items:center;position:relative}
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%}
+    .progress .label{position:absolute;left:50%;transform:translateX(-50%);font-weight:700;color:#fff}
+
+    .top-right{margin-left:auto;display:flex;gap:8px;align-items:center}
 
     @media (max-width:900px){.grid{grid-template-columns:1fr;}.logo{width:48px;height:48px}}
   </style>
@@ -47,7 +56,10 @@
       <div class="logo">ON</div>
       <div>
         <h1>OrgaNet</h1>
-        <p class="lead">Organise tes devoirs, reçois plusieurs rappels quotidiens et un rappel automatique pour les devoirs du lendemain.</p>
+        <p class="lead">Organise tes devoirs, filtre par matière, marque l'important et suis ta progression.</p>
+      </div>
+      <div class="top-right">
+        <button id="themeToggle" class="btn ghost">Mode clair</button>
       </div>
     </header>
 
@@ -55,13 +67,32 @@
       <section class="card">
         <h3>Ajouter un devoir</h3>
         <div style="height:8px"></div>
-        <div class="form-row">
+        <div class="form-row" style="display:grid;grid-template-columns:1fr 180px;gap:8px;align-items:center">
           <input id="devoirText" type="text" placeholder="Titre du devoir" />
-          <input id="devoirDate" type="date" />
+          <select id="devoirSubject">
+            <option value="allemand">Allemand</option>
+            <option value="anglais">Anglais</option>
+            <option value="emc">EMC</option>
+            <option value="francais">Français</option>
+            <option value="histoire-geo">Histoire-Géo</option>
+            <option value="maths">Maths</option>
+            <option value="physique-chimie">Physique-Chimie</option>
+            <option value="section-euro">Section Euro</option>
+            <option value="ses">SES</option>
+            <option value="si">SI</option>
+            <option value="snt">SNT</option>
+            <option value="sport">Sport</option>
+            <option value="svt">SVT</option>
+          </select>
         </div>
         <div style="height:8px"></div>
-        <div class="form-row">
+        <div class="form-row" style="display:grid;grid-template-columns:1fr 120px 90px;gap:8px;align-items:center">
           <input id="devoirNote" type="text" placeholder="Note (optionnel)" />
+          <input id="devoirDate" type="date" />
+          <label style="display:flex;align-items:center;gap:6px"><input id="devoirImportant" type="checkbox"/> Important</label>
+        </div>
+        <div style="height:8px"></div>
+        <div style="display:flex;gap:8px">
           <button id="addBtn" class="btn">Ajouter</button>
         </div>
       </section>
@@ -85,18 +116,37 @@
     <section class="card" style="margin-top:20px">
       <h3>Devoirs</h3>
       <div class="controls">
-        <select id="filter">
+        <select id="filterDate">
           <option value="all">Tous</option>
           <option value="today">Aujourd'hui</option>
           <option value="tomorrow">Demain</option>
           <option value="future">Plus tard</option>
         </select>
-        <button id="clearDone" class="btn ghost">Nettoyer les complétés</button>
+        <select id="filterSubject">
+          <option value="all">Toutes les matières</option>
+          <option value="allemand">Allemand</option>
+          <option value="anglais">Anglais</option>
+          <option value="emc">EMC</option>
+          <option value="francais">Français</option>
+          <option value="histoire-geo">Histoire-Géo</option>
+          <option value="maths">Maths</option>
+          <option value="physique-chimie">Physique-Chimie</option>
+          <option value="section-euro">Section Euro</option>
+          <option value="ses">SES</option>
+          <option value="si">SI</option>
+          <option value="snt">SNT</option>
+          <option value="sport">Sport</option>
+          <option value="svt">SVT</option>
+        </select>
+        <label style="display:flex;align-items:center;gap:6px;margin-left:auto"><input id="filterImportant" type="checkbox"/> Important</label>
+        <button id="clearDone" class="btn danger">Supprimer les complétés</button>
       </div>
       <div style="height:12px"></div>
       <div class="progress" title="Progression">
         <i id="progBar"></i>
+        <div class="label" id="progLabel"></div>
       </div>
+      <div style="height:12px"></div>
       <ul id="devoirs" class="devoirs" aria-live="polite"></ul>
       <footer>
         <div class="small">Les devoirs cochés disparaîtront de la liste principale mais sont archivés localement.</div>
@@ -108,26 +158,47 @@
     const uid = ()=>Date.now().toString(36) + Math.random().toString(36).slice(2,7);
     const qs = s=>document.querySelector(s);
 
-    const STORAGE_KEY = 'organet_data_v2';
-    const defaults = { devoirs: [], settings: { reminders: [], lastTomorrowSent:'' }, archive: [] };
+    const STORAGE_KEY = 'organet_data_v3';
+    const defaults = { devoirs: [], settings: { reminders: [], lastTomorrowSent:'', theme:'dark' }, archive: [] };
     function load(){ const raw = localStorage.getItem(STORAGE_KEY); if(!raw) return JSON.parse(JSON.stringify(defaults)); try{return JSON.parse(raw);}catch(e){return JSON.parse(JSON.stringify(defaults));} }
     function save(state){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
 
     let state = load();
 
+    // DOM refs
     const devoirText = qs('#devoirText');
     const devoirDate = qs('#devoirDate');
     const devoirNote = qs('#devoirNote');
+    const devoirSubject = qs('#devoirSubject');
+    const devoirImportant = qs('#devoirImportant');
     const addBtn = qs('#addBtn');
     const devoirsEl = qs('#devoirs');
-    const filter = qs('#filter');
+    const filterDate = qs('#filterDate');
+    const filterSubject = qs('#filterSubject');
+    const filterImportant = qs('#filterImportant');
     const clearDone = qs('#clearDone');
     const reqNotif = qs('#reqNotif');
     const progBar = qs('#progBar');
+    const progLabel = qs('#progLabel');
     const remindersEl = qs('#reminders');
     const addReminderBtn = qs('#addReminder');
+    const themeToggle = qs('#themeToggle');
+
+    // Apply theme
+    function applyTheme(){
+      if(state.settings.theme === 'light'){
+        document.body.classList.add('light');
+        themeToggle.textContent = 'Mode sombre';
+      } else {
+        document.body.classList.remove('light');
+        themeToggle.textContent = 'Mode clair';
+      }
+    }
 
     function render(){
+      applyTheme();
+
+      // reminders
       remindersEl.innerHTML = '';
       state.settings.reminders.forEach((r,i)=>{
         const row = document.createElement('div'); row.className='settings-row';
@@ -141,20 +212,25 @@
         remindersEl.appendChild(row);
       });
 
+      // devoirs filtering
       const devoirs = state.devoirs.slice().sort((a,b)=> new Date(a.due||0) - new Date(b.due||0));
       const now = new Date();
       let filtered = devoirs;
-      if(filter.value==='today') filtered = devoirs.filter(d=>isSameDay(new Date(d.due), now));
-      else if(filter.value==='tomorrow'){ const tom = addDays(now,1); filtered = devoirs.filter(d=>isSameDay(new Date(d.due), tom)); }
-      else if(filter.value==='future'){ const tom = addDays(now,1); filtered = devoirs.filter(d=>new Date(d.due) > tom); }
+      if(filterDate.value==='today') filtered = devoirs.filter(d=>d.due && isSameDay(new Date(d.due), now));
+      else if(filterDate.value==='tomorrow'){ const tom = addDays(now,1); filtered = devoirs.filter(d=>d.due && isSameDay(new Date(d.due), tom)); }
+      else if(filterDate.value==='future'){ const tom = addDays(now,1); filtered = devoirs.filter(d=>d.due && new Date(d.due) > tom); }
+
+      if(filterSubject.value !== 'all') filtered = filtered.filter(d=>d.subject === filterSubject.value);
+      if(filterImportant.checked) filtered = filtered.filter(d=>d.important);
 
       devoirsEl.innerHTML = '';
       filtered.forEach(d=>{
         const li = document.createElement('li'); li.className='devoir';
+        if(d.important) li.classList.add('important');
         const cb = document.createElement('input'); cb.type='checkbox'; cb.checked=false;
         cb.addEventListener('change', ()=>{ completeDevoir(d.id); });
         const col = document.createElement('div'); col.style.flex='1';
-        const title = document.createElement('div'); title.className='title'; title.textContent = d.text;
+        const title = document.createElement('div'); title.className='title'; title.textContent = d.text + (d.subject ? ` — ${prettySubject(d.subject)}` : '');
         const meta = document.createElement('div'); meta.className='meta';
         const dateStr = d.due ? (new Date(d.due)).toLocaleDateString() : 'Pas de date';
         meta.textContent = (d.note? d.note+' — ':'')+dateStr;
@@ -163,10 +239,16 @@
         devoirsEl.appendChild(li);
       });
 
-      const total = state.devoirs.length;
+      // progress with percent
+      const total = state.devoirs.length + state.archive.length;
       const done = state.archive.length;
-      const percent = total + done === 0 ? 0 : Math.round((done / Math.max(1,total+done))*100);
-      progBar.style.width = percent + '%';
+      const pct = total === 0 ? 100 : Math.round((done / total) * 100);
+      progBar.style.width = pct + '%';
+      progLabel.textContent = `${pct}%`;
+    }
+
+    function prettySubject(s){
+      return s.split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
     }
 
     function isSameDay(a,b){ return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
@@ -175,14 +257,18 @@
     function addDevoir(){ const text = devoirText.value.trim(); if(!text) return alert('Écris un titre pour le devoir');
       const due = devoirDate.value ? new Date(devoirDate.value).toISOString() : null;
       const note = devoirNote.value.trim() || '';
-      const d = { id: uid(), text, due, note };
-      state.devoirs.push(d); save(state); devoirText.value=''; devoirDate.value=''; devoirNote.value=''; render(); }
+      const subject = devoirSubject.value || 'autre';
+      const important = !!devoirImportant.checked;
+      const d = { id: uid(), text, due, note, subject, important };
+      state.devoirs.push(d); save(state); devoirText.value=''; devoirDate.value=''; devoirNote.value=''; devoirImportant.checked=false; render(); }
 
     function completeDevoir(id){ const idx = state.devoirs.findIndex(d=>d.id===id); if(idx===-1) return; const [d] = state.devoirs.splice(idx,1); d.completedAt = new Date().toISOString(); state.archive.push(d); save(state); render(); }
     function clearCompleted(){ if(!confirm('Supprimer définitivement les devoirs archivés ?')) return; state.archive = []; save(state); render(); }
 
     async function requestNotifications(){
-      if(!('Notification' in window)) return alert('Notifications non supportées par ton navigateur.');
+      if(!('Notification'
+
+Notification' in window)) return alert('Notifications non supportées par ton navigateur.');
       const perm = await Notification.requestPermission();
       if(perm==='granted') alert('Notifications autorisées');
       else alert('Permission refusée.');
@@ -216,21 +302,26 @@
     function todayStr(){ const d=new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}` }
     function sendNotification(title, body){
       if(Notification.permission !== 'granted') return;
-      try{
-        new Notification(title,{body, requireInteraction:true});
-      }catch(e){ console.warn('Notification échouée', e); }
+      try{ new Notification(title,{body, requireInteraction:true}); }
+      catch(e){ console.warn('Notification échouée', e); }
     }
 
+    // Events
     addBtn.addEventListener('click', addDevoir);
     devoirText.addEventListener('keydown', e=>{ if(e.key==='Enter') addDevoir(); });
-    filter.addEventListener('change', render);
+    filterDate.addEventListener('change', render);
+    filterSubject.addEventListener('change', render);
+    filterImportant.addEventListener('change', render);
     clearDone.addEventListener('click', clearCompleted);
     reqNotif.addEventListener('click', requestNotifications);
     addReminderBtn.addEventListener('click', ()=>{ state.settings.reminders.push({time:'12:00', text:'Nouveau rappel'}); save(state); render(); });
 
+    themeToggle.addEventListener('click', ()=>{
+      state.settings.theme = state.settings.theme === 'light' ? 'dark' : 'light'; save(state); applyTheme(); });
+
     setInterval(checkReminders,20000);
     render();
-    if(state.devoirs.length===0 && state.archive.length===0){ state.devoirs.push({id:uid(), text:'Essaye OrgaNet — ajoute un devoir', due: new Date().toISOString(), note:'Coche pour le terminer'}); save(state); render(); }
+    if(state.devoirs.length===0 && state.archive.length===0){ state.devoirs.push({id:uid(), text:'Essaye OrgaNet — ajoute un devoir', due: new Date().toISOString(), note:'Coche pour le terminer', subject:'maths', important:false}); save(state); render(); }
     window.addEventListener('storage', ()=>{ state = load(); render(); });
   </script>
 </body>
