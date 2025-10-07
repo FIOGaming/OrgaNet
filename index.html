@@ -6,48 +6,95 @@
   <title>OrgaNet — Mon organiseur</title>
   <style>
     :root{
-      --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#7c5cff; --accent2:#4a9dff; --success:#34d399;
-      --glass: rgba(255,255,255,0.03);
-      --important: rgba(255,193,7,0.12);
+      --bg:#0f1724; --card:#0b1220; --muted:#9aa4b2; --accent:#7c5cff; --accent2:#4a9dff;
+      --success:#34d399; --glass: rgba(255,255,255,0.03); --important: rgba(255,193,7,0.12);
+      --text:#e6eef6;
     }
-    /* Light theme variables */
-    body.light{ --bg:#f6f7fb; --card:#ffffff; --muted:#5b6770; --glass: rgba(2,6,23,0.03); color:#071322 }
+    /* Light theme */
+    body.light{
+      --bg:#f6f7fb; --card:#ffffff; --muted:#5b6770; --glass: rgba(2,6,23,0.03);
+      --text:#071322;
+    }
 
     *{box-sizing:border-box}
-    body{font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; margin:0; background:linear-gradient(180deg,var(--bg) 0%, #071322 60%); color:var(--e6, #e6eef6); min-height:100vh; padding:28px}
-    .wrap{max-width:980px;margin:0 auto}
-    header{display:flex;align-items:center;gap:16px;margin-bottom:18px}
-    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#071322;font-size:20px;box-shadow:0 6px 20px rgba(124,92,255,0.18)}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      background:linear-gradient(180deg,var(--bg) 0%, #071322 60%); color:var(--text); padding:18px;
+    }
+
+    .wrap{max-width:1100px;margin:0 auto; display:flex;flex-direction:column; gap:18px}
+    header{display:flex;align-items:center;gap:12px}
+    .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#071322}
     h1{margin:0;font-size:20px}
     p.lead{margin:0;color:var(--muted);font-size:13px}
 
-    .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
-    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 30px rgba(2,6,23,0.06);}
+    .card{
+      background:var(--card); padding:16px; border-radius:12px; box-shadow:0 6px 30px rgba(2,6,23,0.06);
+    }
 
-    input[type=text], input[type=date], input[type=time], textarea, select{background:var(--glass);border:1px solid rgba(0,0,0,0.04);padding:10px;border-radius:8px;color:inherit;width:100%;}
-    button.btn{background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;padding:10px 12px;border-radius:10px;color:#071322;cursor:pointer;font-weight:600}
-    .btn.ghost{background:transparent;border:1px solid rgba(0,0,0,0.06);color:var(--muted)}
-    .btn.danger{background:linear-gradient(90deg,#ff5c5c,#ff0000);color:#fff}
-
+    /* Form & controls */
+    input, select, textarea, button { font-family:inherit; font-size:14px }
+    input[type=text], input[type=date], input[type=time], textarea, select{
+      background:var(--glass); border:1px solid rgba(0,0,0,0.06); padding:10px; border-radius:8px; color:inherit;
+    }
+    /* ensure select text is black for readability */
     select { color:#000; background:#fff; }
 
-    ul.devoirs{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
-    li.devoir{display:flex;align-items:flex-start;gap:12px;padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(0,0,0,0.06)}
-    li.devoir.important{background:var(--important);box-shadow:0 6px 16px rgba(255,193,7,0.08);border-left:4px solid #FFC107}
-    .devoir .meta{font-size:12px;color:var(--muted)}
-    .devoir .title{font-weight:600}
-    .small{font-size:12px;color:var(--muted)}
+    button.btn{ background:linear-gradient(90deg,var(--accent),var(--accent2)); border:none; padding:10px 12px; border-radius:10px; color:#071322; cursor:pointer; font-weight:600 }
+    .btn.ghost{ background:transparent; border:1px solid rgba(0,0,0,0.06); color:var(--muted) }
+    .btn.danger{ background:linear-gradient(90deg,#ff5c5c,#ff0000); color:#fff }
 
-    .controls{display:flex;gap:8px;align-items:center}
-    .settings-row{display:flex;gap:8px;align-items:center;margin-top:10px}
+    /* Devoirs list */
+    ul.devoirs{ list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px }
+    li.devoir{
+      display:flex; align-items:center; gap:12px; padding:10px; border-radius:10px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border:1px solid rgba(0,0,0,0.06);
+    }
+    /* make checkbox centered vertically & stable */
+    li.devoir input[type=checkbox]{ width:18px; height:18px; margin:0; flex:0 0 22px; align-self:center }
+    li.devoir .meta{ font-size:12px; color:var(--muted) }
+    li.devoir .title{ font-weight:600 }
 
-    .progress{height:14px;background:rgba(0,0,0,0.06);border-radius:12px;overflow:hidden;display:flex;align-items:center;position:relative}
-    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%}
-    .progress .label{position:absolute;left:50%;transform:translateX(-50%);font-weight:700;color:#fff}
+    li.devoir.important{ background:var(--important); box-shadow:0 6px 16px rgba(255,193,7,0.08); border-left:4px solid #FFC107 }
 
-    .top-right{margin-left:auto;display:flex;gap:8px;align-items:center}
+    .controls{ display:flex; gap:10px; align-items:center }
 
-    @media (max-width:900px){.grid{grid-template-columns:1fr;}.logo{width:48px;height:48px}}
+    /* Progress full width */
+    .progress-wrap{ width:100%; }
+    .progress{ height:18px; background:rgba(0,0,0,0.06); border-radius:12px; overflow:hidden; display:block; position:relative; }
+    .progress > i{ display:block; height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0% }
+    .progress .label{ position:absolute; left:50%; transform:translateX(-50%); font-weight:700; color:#fff; top:1px }
+
+    /* Calendar */
+    .calendar .cal-header{ display:flex; align-items:center; gap:8px; margin-bottom:8px }
+    .cal-grid{
+      display:grid;
+      grid-template-columns:120px repeat(7, 1fr);
+      gap:6px;
+    }
+    .cal-cell{
+      min-height:120px; /* make bigger */
+      padding:8px; border-radius:8px; background:rgba(255,255,255,0.02); border:1px solid rgba(0,0,0,0.05);
+      font-size:13px; overflow:auto;
+    }
+    .cal-slot{ background:rgba(255,255,255,0.03); padding:6px; margin-bottom:6px; border-radius:6px; font-size:13px }
+    .cal-slot.important{ border-left:4px solid #FFC107; padding-left:8px }
+    .day-name{ font-weight:700; text-align:center }
+    .slot-time{ font-weight:600; color:var(--muted); font-size:12px; margin-bottom:6px; text-align:center }
+
+    /* Responsive small adjustments */
+    @media (max-width:900px){
+      .cal-grid{ grid-template-columns:80px repeat(7, 1fr) }
+      .cal-cell{ min-height:90px }
+    }
+
+    /* theme toggle */
+    .top-right{ margin-left:auto; display:flex; gap:8px; align-items:center }
+    .theme-toggle{ border-radius:999px; padding:6px 10px; cursor:pointer; background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--text) }
+
+    /* small text */
+    .small{ font-size:12px; color:var(--muted) }
   </style>
 </head>
 <body>
@@ -56,74 +103,21 @@
       <div class="logo">ON</div>
       <div>
         <h1>OrgaNet</h1>
-        <p class="lead">Organise tes devoirs, filtre par matière, marque l'important et suis ta progression.</p>
+        <p class="lead">Organise tes devoirs — planning automatique intégré.</p>
       </div>
       <div class="top-right">
-        <button id="themeToggle" class="btn ghost">Mode clair</button>
+        <button id="themeToggle" class="theme-toggle">Mode clair</button>
       </div>
     </header>
 
-    <div class="grid">
-      <section class="card">
-        <h3>Ajouter un devoir</h3>
-        <div style="height:8px"></div>
-        <div class="form-row" style="display:grid;grid-template-columns:1fr 180px;gap:8px;align-items:center">
-          <input id="devoirText" type="text" placeholder="Titre du devoir" />
-          <select id="devoirSubject">
-            <option value="allemand">Allemand</option>
-            <option value="anglais">Anglais</option>
-            <option value="emc">EMC</option>
-            <option value="francais">Français</option>
-            <option value="histoire-geo">Histoire-Géo</option>
-            <option value="maths">Maths</option>
-            <option value="physique-chimie">Physique-Chimie</option>
-            <option value="section-euro">Section Euro</option>
-            <option value="ses">SES</option>
-            <option value="si">SI</option>
-            <option value="snt">SNT</option>
-            <option value="sport">Sport</option>
-            <option value="svt">SVT</option>
-          </select>
-        </div>
-        <div style="height:8px"></div>
-        <div class="form-row" style="display:grid;grid-template-columns:1fr 120px 90px;gap:8px;align-items:center">
-          <input id="devoirNote" type="text" placeholder="Note (optionnel)" />
-          <input id="devoirDate" type="date" />
-          <label style="display:flex;align-items:center;gap:6px"><input id="devoirImportant" type="checkbox"/> Important</label>
-        </div>
-        <div style="height:8px"></div>
-        <div style="display:flex;gap:8px">
-          <button id="addBtn" class="btn">Ajouter</button>
-        </div>
-      </section>
+    <!-- BLOCK 1: Devoirs & filtres -->
+    <section id="tasksCard" class="card">
+      <h3>📚 Devoirs & filtres</h3>
 
-      <aside class="card">
-        <h3>Rappels & paramètres</h3>
-        <div style="height:10px"></div>
-        <label class="small">Rappels quotidiens (ajoute plusieurs rappels si tu veux)</label>
-        <div id="reminders"></div>
-        <div style="height:8px"></div>
-        <button id="addReminder" class="btn">Ajouter un rappel</button>
-
-        <div style="height:14px"></div>
-        <label class="small">Rappel pour les devoirs du lendemain (18:00)</label>
-        <div class="settings-row">
-          <button id="reqNotif" class="btn">Autoriser notifications</button>
-        </div>
-      </aside>
-    </div>
-
-    <section class="card" style="margin-top:20px">
-      <h3>Devoirs</h3>
-      <div class="controls">
-        <select id="filterDate">
-          <option value="all">Tous</option>
-          <option value="today">Aujourd'hui</option>
-          <option value="tomorrow">Demain</option>
-          <option value="future">Plus tard</option>
-        </select>
-        <select id="filterSubject">
-          <option value="all">Toutes les matières</option>
+      <!-- Add form -->
+      <div style="display:grid; grid-template-columns: 1fr 200px; gap:8px; margin-top:8px">
+        <input id="devoirText" type="text" placeholder="Titre du devoir" />
+        <select id="devoirSubject">
           <option value="allemand">Allemand</option>
           <option value="anglais">Anglais</option>
           <option value="emc">EMC</option>
@@ -137,190 +131,450 @@
           <option value="snt">SNT</option>
           <option value="sport">Sport</option>
           <option value="svt">SVT</option>
+          <option value="autre">Autre</option>
         </select>
-        <label style="display:flex;align-items:center;gap:6px;margin-left:auto"><input id="filterImportant" type="checkbox"/> Important</label>
+      </div>
+
+      <div style="display:grid; grid-template-columns: 1fr 160px 120px; gap:8px; margin-top:8px">
+        <input id="devoirNote" type="text" placeholder="Note (optionnel)" />
+        <input id="devoirDate" type="date" />
+        <label style="display:flex;align-items:center;gap:8px"><input id="devoirImportant" type="checkbox" /> Important</label>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button id="addBtn" class="btn">Ajouter</button>
+        <button id="updateCal" class="btn ghost">Mettre à jour le calendrier</button>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <!-- Filters row -->
+      <div class="controls" style="margin-bottom:8px">
+        <label style="display:flex;gap:6px;align-items:center">
+          Matière
+          <select id="filterSubject" style="margin-left:6px;">
+            <option value="all">Toutes les matières</option>
+            <option value="allemand">Allemand</option>
+            <option value="anglais">Anglais</option>
+            <option value="emc">EMC</option>
+            <option value="francais">Français</option>
+            <option value="histoire-geo">Histoire-Géo</option>
+            <option value="maths">Maths</option>
+            <option value="physique-chimie">Physique-Chimie</option>
+            <option value="section-euro">Section Euro</option>
+            <option value="ses">SES</option>
+            <option value="si">SI</option>
+            <option value="snt">SNT</option>
+            <option value="sport">Sport</option>
+            <option value="svt">SVT</option>
+            <option value="autre">Autre</option>
+          </select>
+        </label>
+
+        <label style="display:flex;gap:6px;align-items:center">
+          <input id="filterImportant" type="checkbox" /> Important
+        </label>
+
+        <label style="display:flex;gap:6px;align-items:center">
+          Tri par date
+          <select id="filterDate" style="margin-left:6px;">
+            <option value="asc">Plus proche → plus lointain</option>
+            <option value="desc">Plus lointain → plus proche</option>
+          </select>
+        </label>
+
+        <div style="flex:1"></div>
         <button id="clearDone" class="btn danger">Supprimer les complétés</button>
       </div>
-      <div style="height:12px"></div>
-      <div class="progress" title="Progression">
-        <i id="progBar"></i>
-        <div class="label" id="progLabel"></div>
+
+      <!-- tasks list -->
+      <ul id="devoirs" class="devoirs" aria-live="polite" style="margin-top:10px"></ul>
+    </section>
+
+    <!-- BLOCK 2: Progression -->
+    <section id="progressCard" class="card progress-wrap">
+      <h3>⏳ Progression</h3>
+      <div style="height:8px"></div>
+      <div class="progress"><i id="progBar"></i><div class="label" id="progLabel"></div></div>
+    </section>
+
+    <!-- BLOCK 3: Calendar -->
+    <section id="calendarCard" class="card calendar">
+      <div class="cal-header">
+        <h3 style="margin:0">📅 Calendrier automatique</h3>
+        <div style="flex:1"></div>
+        <button id="prevWeek" class="btn ghost">◀️</button>
+        <div id="weekLabel" style="font-weight:700; margin:0 8px"></div>
+        <button id="nextWeek" class="btn ghost">▶️</button>
       </div>
-      <div style="height:12px"></div>
-      <ul id="devoirs" class="devoirs" aria-live="polite"></ul>
-      <footer>
-        <div class="small">Les devoirs cochés disparaîtront de la liste principale mais sont archivés localement.</div>
-      </footer>
+      <div id="calGrid" class="cal-grid"></div>
+    </section>
+
+    <!-- BLOCK 4: Reminders -->
+    <section id="remindersCard" class="card">
+      <h3>🔔 Rappels & paramètres</h3>
+      <div style="height:8px"></div>
+      <div id="reminders" style="display:flex;flex-direction:column;gap:8px"></div>
+      <div style="height:8px"></div>
+      <div style="display:flex;gap:8px">
+        <button id="addReminder" class="btn">Ajouter un rappel</button>
+        <button id="reqNotif" class="btn ghost">Autoriser notifications</button>
+      </div>
+      <div style="height:8px"></div>
+      <div class="small">Le rappel « devoirs pour demain » s'enverra à 18:00 si des devoirs sont prévus.</div>
     </section>
   </div>
 
   <script>
-    const uid = ()=>Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+    /* -----------------------------
+       Utilities & state
+    ----------------------------- */
+    const uid = ()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
     const qs = s=>document.querySelector(s);
+    const qsa = s=>document.querySelectorAll(s);
 
-    const STORAGE_KEY = 'organet_data_v3';
-    const defaults = { devoirs: [], settings: { reminders: [], lastTomorrowSent:'', theme:'dark' }, archive: [] };
-    function load(){ const raw = localStorage.getItem(STORAGE_KEY); if(!raw) return JSON.parse(JSON.stringify(defaults)); try{return JSON.parse(raw);}catch(e){return JSON.parse(JSON.stringify(defaults));} }
-    function save(state){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
-
-    let state = load();
+    const STORAGE_KEY = 'organet_scheduler_v1';
+    let state = JSON.parse(localStorage.getItem(STORAGE_KEY) || JSON.stringify({
+      devoirs:[], archive:[], settings:{ reminders:[], lastTomorrowSent:'', theme:'dark' }
+    }));
 
     // DOM refs
+    const addBtn = qs('#addBtn');
+    const updateCalBtn = qs('#updateCal');
     const devoirText = qs('#devoirText');
     const devoirDate = qs('#devoirDate');
     const devoirNote = qs('#devoirNote');
     const devoirSubject = qs('#devoirSubject');
     const devoirImportant = qs('#devoirImportant');
-    const addBtn = qs('#addBtn');
     const devoirsEl = qs('#devoirs');
-    const filterDate = qs('#filterDate');
     const filterSubject = qs('#filterSubject');
     const filterImportant = qs('#filterImportant');
+    const filterDate = qs('#filterDate');
     const clearDone = qs('#clearDone');
-    const reqNotif = qs('#reqNotif');
     const progBar = qs('#progBar');
     const progLabel = qs('#progLabel');
     const remindersEl = qs('#reminders');
     const addReminderBtn = qs('#addReminder');
+    const reqNotif = qs('#reqNotif');
+
+    const prevWeek = qs('#prevWeek');
+    const nextWeek = qs('#nextWeek');
+    const weekLabel = qs('#weekLabel');
+    const calGrid = qs('#calGrid');
+
     const themeToggle = qs('#themeToggle');
 
-    // Apply theme
+    let displayWeekOffset = 0;
+
+    function save(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+    /* -----------------------------
+       Theme
+    ----------------------------- */
     function applyTheme(){
-      if(state.settings.theme === 'light'){
-        document.body.classList.add('light');
-        themeToggle.textContent = 'Mode sombre';
-      } else {
-        document.body.classList.remove('light');
-        themeToggle.textContent = 'Mode clair';
+      if((state.settings && state.settings.theme) === 'light'){ document.body.classList.add('light'); themeToggle.textContent = 'Mode sombre'; }
+      else { document.body.classList.remove('light'); themeToggle.textContent = 'Mode clair'; }
+    }
+    themeToggle.addEventListener('click', ()=>{
+      state.settings.theme = state.settings.theme === 'light' ? 'dark' : 'light';
+      save(); applyTheme();
+    });
+    applyTheme();
+
+    /* -----------------------------
+       Helper date/time functions
+    ----------------------------- */
+    function isoWeekNumber(dt){
+      const d = new Date(Date.UTC(dt.getFullYear(), dt.getMonth(), dt.getDate()));
+      const dayNum = d.getUTCDay() || 7;
+      d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+      const yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+      return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+    }
+    function startOfISOWeek(date, offsetWeeks=0){
+      const d = new Date(date);
+      const day = d.getDay() || 7;
+      const monday = new Date(d);
+      monday.setDate(d.getDate() - day + 1 + offsetWeeks*7);
+      monday.setHours(0,0,0,0);
+      return monday;
+    }
+    function addMinutes(date, mins){ const x = new Date(date); x.setMinutes(x.getMinutes()+mins); return x; }
+    function timeToMinutes(t){ const [h,m] = t.split(':').map(Number); return h*60+m; }
+    function minutesToTime(m){ const hh = String(Math.floor(m/60)).padStart(2,'0'); const mm = String(m%60).padStart(2,'0'); return `${hh}:${mm}`; }
+
+    /* -----------------------------
+       Availability definition
+       (based on user's availability instructions)
+    ----------------------------- */
+    function getWeeklyAvailability(isoWeek){
+      // isoWeek %2 === 0 => semaine paire
+      const slots = [];
+      // Tue 8-9 (weekday 2), Wed 8-9 (3), Thu 17-18 (4), Fri 17-18 (5) if pair, Sun 11-12:30 & 14-18 (7)
+      slots.push({weekday:2, start:'08:00', end:'09:00'});
+      slots.push({weekday:3, start:'08:00', end:'09:00'});
+      slots.push({weekday:4, start:'17:00', end:'18:00'});
+      if(isoWeek % 2 === 0) slots.push({weekday:5, start:'17:00', end:'18:00'});
+      slots.push({weekday:7, start:'11:00', end:'12:30'});
+      slots.push({weekday:7, start:'14:00', end:'18:00'});
+      return slots;
+    }
+
+    /* -----------------------------
+       Scheduling algorithm
+       - estimate durations (midpoints)
+       - fill earliest slots possible before due date
+    ----------------------------- */
+    function estimateDuration(devoir){
+      // use midpoint in given ranges
+      return devoir.important ? 75 : 25; // minutes
+    }
+
+    function buildWeekSlots(weekStart){
+      const iso = isoWeekNumber(weekStart);
+      const avail = getWeeklyAvailability(iso);
+      const slots = {};
+      for(let d=1; d<=7; d++) slots[d]=[];
+      avail.forEach(s=>{
+        const startM = timeToMinutes(s.start);
+        const endM = timeToMinutes(s.end);
+        slots[s.weekday].push({start:startM, end:endM, assigned:[]});
+      });
+      // sort each day's slots by start
+      for(let d=1; d<=7; d++) slots[d].sort((a,b)=>a.start-b.start);
+      return slots;
+    }
+
+    function generateScheduleForWeek(offsetWeeks){
+      const today = new Date();
+      const weekStart = startOfISOWeek(today, offsetWeeks);
+      const weekIso = isoWeekNumber(weekStart);
+      const slots = buildWeekSlots(weekStart);
+
+      const tasks = state.devoirs.slice().sort((a,b)=> new Date(a.due||0) - new Date(b.due||0));
+      const assignments = [];
+
+      for(const task of tasks){
+        let remaining = estimateDuration(task);
+        const dueDate = task.due ? new Date(task.due) : null;
+        // iterate days earliest to latest (Mon..Sun)
+        for(let day=1; day<=7 && remaining>0; day++){
+          // date for this cell
+          const cellDate = new Date(weekStart); cellDate.setDate(weekStart.getDate() + (day-1));
+          // if deadline exists and cellDate is past the due date -> cannot schedule here
+          if(dueDate && cellDate > new Date(dueDate.getFullYear(), dueDate.getMonth(), dueDate.getDate(), 23,59,59)) break;
+          const daySlots = slots[day] || [];
+          for(const s of daySlots){
+            if(remaining<=0) break;
+            // compute occupied segments total
+            let occupiedIntervals = s.assigned.slice().sort((a,b)=>a.start-b.start);
+            // find gaps in this slot
+            let cursor = s.start;
+            // try to place as early as possible in this slot
+            for(const a of occupiedIntervals){
+              if(a.start > cursor){
+                const gap = a.start - cursor;
+                if(gap > 0){
+                  const take = Math.min(gap, remaining);
+                  s.assigned.push({start:cursor, end:cursor+take, taskId:task.id});
+                  assignments.push({taskId:task.id, day, start:cursor, end:cursor+take, title:task.text, subject:task.subject, important:task.important});
+                  remaining -= take;
+                  cursor = cursor + take;
+                  if(remaining<=0) break;
+                }
+              }
+              cursor = Math.max(cursor, a.end);
+            }
+            if(remaining>0 && cursor < s.end){
+              const take = Math.min(s.end - cursor, remaining);
+              s.assigned.push({start:cursor, end:cursor+take, taskId:task.id});
+              assignments.push({taskId:task.id, day, start:cursor, end:cursor+take, title:task.text, subject:task.subject, important:task.important});
+              remaining -= take;
+            }
+          }
+        }
+        // if remaining>0 after scanning week => we leave it unscheduled this week (could be scheduled next week)
+      }
+
+      return {weekStart, assignments, slots, weekIso};
+    }
+
+    /* -----------------------------
+       Render calendar UI
+    ----------------------------- */
+    function makeCell(text, cls){
+      const d = document.createElement('div');
+      d.className = 'cal-cell';
+      if(cls==='day') d.classList.add('day-name');
+      if(cls==='time') d.classList.add('slot-time');
+      d.textContent = text;
+      return d;
+    }
+
+    function renderCalendar(offsetWeeks=0){
+      const {weekStart, assignments, slots, weekIso} = generateScheduleForWeek(offsetWeeks);
+      const start = new Date(weekStart);
+      const end = new Date(weekStart); end.setDate(weekStart.getDate()+6);
+      weekLabel.textContent = `Semaine ${weekIso} — ${start.toLocaleDateString()} → ${end.toLocaleDateString()}`;
+
+      calGrid.innerHTML = '';
+      // corner
+      calGrid.appendChild(makeCell('',''));
+      const dayNames = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];
+      for(let d=1; d<=7; d++){
+        const dt = new Date(weekStart); dt.setDate(weekStart.getDate() + (d-1));
+        calGrid.appendChild(makeCell(`${dayNames[d-1]} ${dt.getDate()}/${dt.getMonth()+1}`,'day'));
+      }
+
+      const maxSlots = Math.max(...Object.values(slots).map(a=>a.length), 1);
+      for(let si=0; si<maxSlots; si++){
+        // time column label: find first day that has this slot
+        let timeLabel = '';
+        for(let d=1; d<=7; d++){ if(slots[d][si]){ timeLabel = minutesToTime(slots[d][si].start) + '–' + minutesToTime(slots[d][si].end); break; } }
+        calGrid.appendChild(makeCell(timeLabel,'time'));
+        for(let d=1; d<=7; d++){
+          const cell = document.createElement('div'); cell.className = 'cal-cell';
+          const s = slots[d][si];
+          if(!s){ cell.innerHTML = '<div style="color:var(--muted)">—</div>'; calGrid.appendChild(cell); continue; }
+          const assigned = (s.assigned || []).slice().sort((a,b)=>a.start-b.start);
+          if(assigned.length===0){ cell.innerHTML = '<div style="color:var(--muted)">Libre</div>'; calGrid.appendChild(cell); continue; }
+          for(const a of assigned){
+            const task = { title: a.taskId ? (state.devoirs.concat(state.archive).find(x=>x.id===a.taskId)||{}).text : 'Devoir' };
+            // fallback find in assignments (title)
+            const found = (function(){
+              const as = assignments.find(x=>x.taskId===a.taskId);
+              return as ? as.title : (task.title || 'Devoir');
+            })();
+            const div = document.createElement('div'); div.className = 'cal-slot';
+            const isImp = (assignments.find(x=>x.taskId===a.taskId) || {}).important;
+            if(isImp) div.classList.add('important');
+            div.textContent = `${minutesToTime(a.start)}–${minutesToTime(a.end)} • ${found}`;
+            cell.appendChild(div);
+          }
+          calGrid.appendChild(cell);
+        }
       }
     }
 
-    function render(){
-      applyTheme();
+    /* -----------------------------
+       Render tasks list & progression
+    ----------------------------- */
+    function prettySubject(s){
+      return (s||'').split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+    }
 
+    function render(){
       // reminders
       remindersEl.innerHTML = '';
-      state.settings.reminders.forEach((r,i)=>{
-        const row = document.createElement('div'); row.className='settings-row';
+      (state.settings.reminders || []).forEach((r,i)=>{
+        const row = document.createElement('div'); row.className='settings-row'; row.style.display='flex'; row.style.gap='8px'; row.style.alignItems='center';
         const time = document.createElement('input'); time.type='time'; time.value=r.time;
         const text = document.createElement('input'); text.type='text'; text.value=r.text;
         const del = document.createElement('button'); del.textContent='×'; del.className='btn ghost'; del.style.width='40px';
-        del.onclick=()=>{ state.settings.reminders.splice(i,1); save(state); render(); };
-        time.onchange=()=>{ r.time=time.value; save(state); };
-        text.onchange=()=>{ r.text=text.value; save(state); };
-        row.appendChild(time); row.appendChild(text); row.appendChild(del);
-        remindersEl.appendChild(row);
+        del.onclick = ()=>{ state.settings.reminders.splice(i,1); save(); render(); };
+        time.onchange = ()=>{ r.time = time.value; save(); };
+        text.onchange = ()=>{ r.text = text.value; save(); };
+        row.appendChild(time); row.appendChild(text); row.appendChild(del); remindersEl.appendChild(row);
       });
 
-      // devoirs filtering
-      const devoirs = state.devoirs.slice().sort((a,b)=> new Date(a.due||0) - new Date(b.due||0));
-      const now = new Date();
-      let filtered = devoirs;
-      if(filterDate.value==='today') filtered = devoirs.filter(d=>d.due && isSameDay(new Date(d.due), now));
-      else if(filterDate.value==='tomorrow'){ const tom = addDays(now,1); filtered = devoirs.filter(d=>d.due && isSameDay(new Date(d.due), tom)); }
-      else if(filterDate.value==='future'){ const tom = addDays(now,1); filtered = devoirs.filter(d=>d.due && new Date(d.due) > tom); }
-
-      if(filterSubject.value !== 'all') filtered = filtered.filter(d=>d.subject === filterSubject.value);
-      if(filterImportant.checked) filtered = filtered.filter(d=>d.important);
-
+      // tasks
       devoirsEl.innerHTML = '';
-      filtered.forEach(d=>{
-        const li = document.createElement('li'); li.className='devoir';
-        if(d.important) li.classList.add('important');
-        const cb = document.createElement('input'); cb.type='checkbox'; cb.checked=false;
+      const tasks = state.devoirs.slice().sort((a,b)=> new Date(a.due||0) - new Date(b.due||0));
+      const fSub = filterSubject.value;
+      const fImp = filterImportant.checked;
+      const order = filterDate.value;
+      const filtered = tasks.filter(d=>{
+        if(fSub !== 'all' && d.subject !== fSub) return false;
+        if(fImp && !d.important) return false;
+        return true;
+      }).sort((a,b)=>{
+        const ad = a.due ? new Date(a.due) : new Date(8640000000000000);
+        const bd = b.due ? new Date(b.due) : new Date(8640000000000000);
+        return order === 'asc' ? ad-bd : bd-ad;
+      });
+
+      for(const d of filtered){
+        const li = document.createElement('li'); li.className='devoir'; if(d.important) li.classList.add('important');
+        const cb = document.createElement('input'); cb.type='checkbox';
         cb.addEventListener('change', ()=>{ completeDevoir(d.id); });
         const col = document.createElement('div'); col.style.flex='1';
         const title = document.createElement('div'); title.className='title'; title.textContent = d.text + (d.subject ? ` — ${prettySubject(d.subject)}` : '');
-        const meta = document.createElement('div'); meta.className='meta';
-        const dateStr = d.due ? (new Date(d.due)).toLocaleDateString() : 'Pas de date';
-        meta.textContent = (d.note? d.note+' — ':'')+dateStr;
-        col.appendChild(title); col.appendChild(meta);
-        li.appendChild(cb); li.appendChild(col);
-        devoirsEl.appendChild(li);
-      });
+        const meta = document.createElement('div'); meta.className='meta'; meta.textContent = (d.note ? d.note + ' — ' : '') + (d.due ? new Date(d.due).toLocaleDateString() : 'Pas de date');
+        col.appendChild(title); col.appendChild(meta); li.appendChild(cb); li.appendChild(col); devoirsEl.appendChild(li);
+      }
 
-      // progress with percent
+      // progress
       const total = state.devoirs.length + state.archive.length;
       const done = state.archive.length;
-      const pct = total === 0 ? 100 : Math.round((done / total) * 100);
+      const pct = total === 0 ? 100 : Math.round((done/total)*100);
       progBar.style.width = pct + '%';
-      progLabel.textContent = `${pct}%`;
+      progLabel.textContent = pct + '%';
+
+      save();
     }
 
-    function prettySubject(s){
-      return s.split('-').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
-    }
-
-    function isSameDay(a,b){ return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
-    function addDays(d,n){ const x = new Date(d); x.setDate(x.getDate()+n); x.setHours(0,0,0,0); return x; }
-
-    function addDevoir(){ const text = devoirText.value.trim(); if(!text) return alert('Écris un titre pour le devoir');
+    /* -----------------------------
+       CRUD actions
+    ----------------------------- */
+    function addDevoir(){
+      const text = devoirText.value.trim(); if(!text) return alert('Écris un titre pour le devoir');
       const due = devoirDate.value ? new Date(devoirDate.value).toISOString() : null;
       const note = devoirNote.value.trim() || '';
       const subject = devoirSubject.value || 'autre';
       const important = !!devoirImportant.checked;
       const d = { id: uid(), text, due, note, subject, important };
-      state.devoirs.push(d); save(state); devoirText.value=''; devoirDate.value=''; devoirNote.value=''; devoirImportant.checked=false; render(); }
-
-    function completeDevoir(id){ const idx = state.devoirs.findIndex(d=>d.id===id); if(idx===-1) return; const [d] = state.devoirs.splice(idx,1); d.completedAt = new Date().toISOString(); state.archive.push(d); save(state); render(); }
-    function clearCompleted(){ if(!confirm('Supprimer définitivement les devoirs archivés ?')) return; state.archive = []; save(state); render(); }
-
-    async function requestNotifications(){
-      if(!('Notification' in window)) return alert('Notifications non supportées par ton navigateur.');
-      const perm = await Notification.requestPermission();
-      if(perm==='granted') alert('Notifications autorisées');
-      else alert('Permission refusée.');
+      state.devoirs.push(d);
+      devoirText.value=''; devoirDate.value=''; devoirNote.value=''; devoirImportant.checked=false;
+      render();
+      // optionally update calendar automatically when a new task added
+      renderCalendar(displayWeekOffset);
     }
 
-    function checkReminders(){
-      const now = new Date();
-      const hhmm = now.getHours().toString().padStart(2,'0')+":"+now.getMinutes().toString().padStart(2,'0');
-      state.settings.reminders.forEach(r=>{
-        if(r.time===hhmm){
-          if(r.last!==todayStr()){
-            sendNotification('Rappel', r.text||'Regarde tes devoirs !');
-            r.last = todayStr(); save(state);
-          }
-        }
-      });
-
-      if(hhmm==='18:00'){
-        if(state.settings.lastTomorrowSent !== todayStr()){
-          const tom = addDays(now,1);
-          const devoirsTomorrow = state.devoirs.filter(d=>d.due && isSameDay(new Date(d.due), tom));
-          if(devoirsTomorrow.length){
-            const list = devoirsTomorrow.map(d=>`• ${d.text} (${new Date(d.due).toLocaleDateString()})`).join('\n');
-            sendNotification('Devoirs pour demain', `Il te reste ${devoirsTomorrow.length} devoir(s):\n${list}`);
-          }
-          state.settings.lastTomorrowSent = todayStr(); save(state);
-        }
-      }
+    function completeDevoir(id){
+      const idx = state.devoirs.findIndex(d=>d.id===id);
+      if(idx === -1) return;
+      const [d] = state.devoirs.splice(idx,1);
+      d.completedAt = new Date().toISOString();
+      state.archive.push(d);
+      render();
+      renderCalendar(displayWeekOffset);
     }
 
-    function todayStr(){ const d=new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}` }
-    function sendNotification(title, body){
-      if(Notification.permission !== 'granted') return;
-      try{ new Notification(title,{body, requireInteraction:true}); }
-      catch(e){ console.warn('Notification échouée', e); }
-    }
+    /* -----------------------------
+       Reminders & notifications
+    ----------------------------- */
+    addReminderBtn.addEventListener('click', ()=>{
+      state.settings.reminders = state.settings.reminders || [];
+      state.settings.reminders.push({time:'12:00', text:'Rappel'});
+      save(); render();
+    });
+    reqNotif.addEventListener('click', async ()=>{
+      if(!('Notification' in window)) return alert('Notifications non supportées');
+      const p = await Notification.requestPermission();
+      alert('Permission: ' + p);
+    });
 
-    // Events
+    /* -----------------------------
+       Events & init
+    ----------------------------- */
     addBtn.addEventListener('click', addDevoir);
+    updateCalBtn.addEventListener('click', ()=>{ renderCalendar(displayWeekOffset); });
     devoirText.addEventListener('keydown', e=>{ if(e.key==='Enter') addDevoir(); });
-    filterDate.addEventListener('change', render);
+
     filterSubject.addEventListener('change', render);
     filterImportant.addEventListener('change', render);
-    clearDone.addEventListener('click', clearCompleted);
-    reqNotif.addEventListener('click', requestNotifications);
-    addReminderBtn.addEventListener('click', ()=>{ state.settings.reminders.push({time:'12:00', text:'Nouveau rappel'}); save(state); render(); });
+    filterDate.addEventListener('change', render);
 
-    themeToggle.addEventListener('click', ()=>{
-      state.settings.theme = state.settings.theme === 'light' ? 'dark' : 'light'; save(state); applyTheme(); });
+    clearDone.addEventListener('click', ()=>{
+      if(confirm('Supprimer définitivement les devoirs archivés ?')){ state.archive = []; save(); render(); }
+    });
 
-    setInterval(checkReminders,20000);
+    prevWeek.addEventListener('click', ()=>{ displayWeekOffset--; renderCalendar(displayWeekOffset); });
+    nextWeek.addEventListener('click', ()=>{ displayWeekOffset++; renderCalendar(displayWeekOffset); });
+
+    // initial render
     render();
-    if(state.devoirs.length===0 && state.archive.length===0){ state.devoirs.push({id:uid(), text:'Essaye OrgaNet — ajoute un devoir', due: new Date().toISOString(), note:'Coche pour le terminer', subject:'maths', important:false}); save(state); render(); }
-    window.addEventListener('storage', ()=>{ state = load(); render(); });
+    renderCalendar(0);
   </script>
 </body>
 </html>
